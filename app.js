@@ -2,9 +2,24 @@ const express=require('express');
 const app = express();
 const morgan=require('morgan')
 const bodyParser =require('body-parser');
+const mongoose = require("mongoose");
 
 const productRoutes=require('./api/routes/products');
 const orderRoutes=require('./api/routes/orders');
+
+
+mongoose
+  .connect(process.env.MONGO, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: 'nodejs',
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));

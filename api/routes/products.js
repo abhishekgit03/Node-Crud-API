@@ -1,5 +1,7 @@
 const express= require('express');
 const router =express.Router();
+const Product=require('../models/product')
+const mongoose=require('mongoose');
 
 router.get("/",(req,res,next)=>
 {
@@ -10,8 +12,18 @@ router.get("/",(req,res,next)=>
 
 router.post("/",(req,res,next)=>
 {
-    res.status(200).json({
-        message: "Handling POST"
+    const product=new Product({
+        _id: new mongoose.Types.ObjectId(),
+        name:req.body.name,
+        price: req.body.price
+
+    });
+    product.save()
+    .then(savedProduct => {
+        res.json(savedProduct);
+    })
+    .catch(err => {
+        res.send(err);
     });
 });
 
